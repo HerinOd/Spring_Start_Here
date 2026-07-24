@@ -1,15 +1,23 @@
 package main;
 
-import config.ProjectConfig;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import model.Comment;
+import proxies.EmailCommentNotificationProxy;
+import repositories.DBCommentRepository;
+import services.CommentService;
 
 public class Main {
     public static void main(String[] args) {
-        var context = new AnnotationConfigApplicationContext(ProjectConfig.class);
+        DBCommentRepository dbCommentRepository = new DBCommentRepository();
+        EmailCommentNotificationProxy emailCommentNotificationProxy = new EmailCommentNotificationProxy();
 
-        Person person = context.getBean(Person.class);
+        CommentService commentService = new CommentService(emailCommentNotificationProxy, dbCommentRepository);
 
-        System.out.println("Person's name: " + person.getName());
-        System.out.println("Person's parrot: " + person.getParrot());
+        Comment comment = new Comment();
+
+        comment.setAuthor("HerinOd");
+        comment.setText("Sẽ có những con cá phải giả chó!");
+
+        commentService.publishComment(comment);
+
     }
 }
