@@ -1,6 +1,7 @@
 package services;
 
 import model.Comment;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import proxies.CommentNotificationProxy;
 import repositories.CommentRepository;
@@ -10,7 +11,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentNotificationProxy commentNotificationProxy;
 
-    public CommentService(CommentNotificationProxy commentNotificationProxy, CommentRepository commentRepository) {
+    public CommentService(@Qualifier("PUSH") CommentNotificationProxy commentNotificationProxy, CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
         this.commentNotificationProxy = commentNotificationProxy;
     }
